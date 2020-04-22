@@ -13,15 +13,13 @@ if [ $# -lt 1 ]; then
    exit
 fi
 
-programname=${0}
-jobname=${1}
-
+JOB_NAME=${1}
 shift
 
 ROOT_DIR=/expscratch/${USER}/struct_ensemble_distill
 DATA_DIR=${ROOT_DIR}/data/wmt_ende
 DATA=${DATA_DIR}/preprocessed
-JOB_DIR=${ROOT_DIR}/jobs/${jobname}
+JOB_DIR=${ROOT_DIR}/jobs/${JOB_NAME}
 mkdir -p ${JOB_DIR}
 JOB_SCRIPT=${JOB_DIR}/job.sh
 TRAIN=`realpath ../../../train.py`
@@ -85,6 +83,6 @@ python ${TRAIN} -data ${DATA} \
 EOL
 
 chmod a+x ${JOB_SCRIPT}
-qsub -q gpu.q@@2080 gpu=${GPU} ${JOB_SCRIPT}
+qsub -q gpu.q -l gpu=${GPU} ${JOB_SCRIPT}
 
 # eof
